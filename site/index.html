@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VitaSort — Find the best value supplement</title>
+<meta name="description" content="Supplements ranked by price per gram of active ingredient. No filler math.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div class="hdr">
+    <div class="logo" data-nav="home"><span class="logo-m"></span>VitaSort</div>
+    <div class="nav">
+      <span class="navitem" data-nav="results">Browse</span>
+      <span class="navitem" data-nav="saved">Saved<span class="badge" id="savedBadge">0</span></span>
+      <span class="navitem">About</span>
+    </div>
+  </div>
+  <div id="view" class="main"><div class="loading">Loading catalog…</div></div>
+  <div class="ftr">Prices refresh daily from retailer listings. <span class="upd" id="updated"></span></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

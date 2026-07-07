@@ -1,0 +1,832 @@
+{
+ "generated": "2026-07-07T04:14:22.517084+00:00",
+ "categories": {
+  "protein": {
+   "label": "Protein Powder",
+   "valueUnit": "/g protein",
+   "valueHeader": "$/g protein",
+   "valueDecimals": 3,
+   "columns": [
+    "Source",
+    "Complete",
+    "Protein"
+   ],
+   "filter": {
+    "allLabel": "All sources",
+    "field": "source",
+    "options": [
+     "Whey",
+     "Pea",
+     "Casein",
+     "Blend"
+    ]
+   },
+   "toggles": [
+    {
+     "label": "Complete protein",
+     "field": "complete"
+    }
+   ]
+  },
+  "creatine": {
+   "label": "Creatine",
+   "valueUnit": "/g",
+   "valueHeader": "$/g",
+   "valueDecimals": 3,
+   "columns": [
+    "Form",
+    "Micronized",
+    "Dose"
+   ],
+   "filter": {
+    "allLabel": "All forms",
+    "field": "form",
+    "options": [
+     "Powder",
+     "Pill",
+     "Gummy"
+    ]
+   }
+  },
+  "preworkout": {
+   "label": "Pre-Workout",
+   "valueUnit": "/serving",
+   "valueHeader": "$/serving",
+   "valueDecimals": 2,
+   "columns": [
+    "Caffeine",
+    "Form",
+    "Servings"
+   ],
+   "filter": {
+    "allLabel": "All caffeine levels",
+    "field": "caffeineBucket",
+    "options": [
+     "Under 200 mg",
+     "200\u2013300 mg",
+     "300+ mg"
+    ]
+   },
+   "toggles": [
+    {
+     "label": "Stim-free option",
+     "field": "stimFree"
+    }
+   ]
+  },
+  "omega3": {
+   "label": "Omega-3",
+   "valueUnit": "/g EPA+DHA",
+   "valueHeader": "$/g omega",
+   "valueDecimals": 2,
+   "columns": [
+    "Form",
+    "EPA+DHA",
+    "Servings"
+   ],
+   "filter": {
+    "allLabel": "All forms",
+    "field": "form",
+    "options": [
+     "Softgel",
+     "Liquid"
+    ]
+   }
+  }
+ },
+ "products": [
+  {
+   "id": "on-gold-whey-5lb",
+   "cat": "protein",
+   "name": "Gold Standard 100% Whey (5 lb)",
+   "brand": "Optimum Nutrition",
+   "price": 79.99,
+   "servings": 71,
+   "retailer": "Amazon",
+   "url": "https://www.amazon.com/dp/B000QSNYGI",
+   "stock": true,
+   "stars": 4.7,
+   "reviews": 98000,
+   "valuePer": 0.0469,
+   "valueScore": 33,
+   "score": 63,
+   "attrs": {
+    "source": "Whey",
+    "complete": true,
+    "proteinServ": 24,
+    "form": "Powder"
+   },
+   "cols": [
+    "Whey",
+    "Complete",
+    "24 g"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "Optimum Nutrition"
+    ],
+    [
+     "Servings per container",
+     "71"
+    ],
+    [
+     "Protein source",
+     "Whey"
+    ],
+    [
+     "Complete protein",
+     "Yes"
+    ],
+    [
+     "Protein per serving",
+     "24 g"
+    ],
+    [
+     "Form",
+     "Powder"
+    ],
+    [
+     "Price",
+     "$79.99"
+    ],
+    [
+     "Price per serving",
+     "$1.13"
+    ],
+    [
+     "Cost per g protein",
+     "$0.047"
+    ]
+   ]
+  },
+  {
+   "id": "myprotein-impact-whey-5.5lb",
+   "cat": "protein",
+   "name": "Impact Whey Protein (5.5 lb)",
+   "brand": "Myprotein",
+   "price": 66.99,
+   "servings": 100,
+   "retailer": "Myprotein",
+   "url": "https://us.myprotein.com/sports-nutrition/impact-whey-protein/10530943.html",
+   "stock": true,
+   "stars": 4.5,
+   "reviews": 15400,
+   "valuePer": 0.0372,
+   "valueScore": 100,
+   "score": 95,
+   "attrs": {
+    "source": "Whey",
+    "complete": true,
+    "proteinServ": 18,
+    "form": "Powder"
+   },
+   "cols": [
+    "Whey",
+    "Complete",
+    "18 g"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "Myprotein"
+    ],
+    [
+     "Servings per container",
+     "100"
+    ],
+    [
+     "Protein source",
+     "Whey"
+    ],
+    [
+     "Complete protein",
+     "Yes"
+    ],
+    [
+     "Protein per serving",
+     "18 g"
+    ],
+    [
+     "Form",
+     "Powder"
+    ],
+    [
+     "Price",
+     "$66.99"
+    ],
+    [
+     "Price per serving",
+     "$0.67"
+    ],
+    [
+     "Cost per g protein",
+     "$0.037"
+    ]
+   ]
+  },
+  {
+   "id": "now-pea-protein-2lb",
+   "cat": "protein",
+   "name": "Pea Protein Unflavored (2 lb)",
+   "brand": "NOW Sports",
+   "price": 26.99,
+   "servings": 27,
+   "retailer": "iHerb",
+   "url": "https://www.iherb.com/pr/now-foods-sports-pea-protein-pure-unflavored-2-lbs-907-g/47441",
+   "stock": true,
+   "stars": 4.5,
+   "reviews": 8900,
+   "valuePer": 0.0417,
+   "valueScore": 67,
+   "score": 79,
+   "attrs": {
+    "source": "Pea",
+    "complete": false,
+    "proteinServ": 24,
+    "form": "Powder"
+   },
+   "cols": [
+    "Pea",
+    "\u2014",
+    "24 g"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "NOW Sports"
+    ],
+    [
+     "Servings per container",
+     "27"
+    ],
+    [
+     "Protein source",
+     "Pea"
+    ],
+    [
+     "Complete protein",
+     "No"
+    ],
+    [
+     "Protein per serving",
+     "24 g"
+    ],
+    [
+     "Form",
+     "Powder"
+    ],
+    [
+     "Price",
+     "$26.99"
+    ],
+    [
+     "Price per serving",
+     "$1.00"
+    ],
+    [
+     "Cost per g protein",
+     "$0.042"
+    ]
+   ]
+  },
+  {
+   "id": "dymatize-casein-4lb",
+   "cat": "protein",
+   "name": "Elite Casein (4 lb)",
+   "brand": "Dymatize",
+   "price": 74.99,
+   "servings": 52,
+   "retailer": "Amazon",
+   "url": "https://www.amazon.com/dp/B002DYIZH6",
+   "stock": true,
+   "stars": 4.6,
+   "reviews": 12000,
+   "valuePer": 0.0577,
+   "valueScore": 0,
+   "score": 46,
+   "attrs": {
+    "source": "Casein",
+    "complete": true,
+    "proteinServ": 25,
+    "form": "Powder"
+   },
+   "cols": [
+    "Casein",
+    "Complete",
+    "25 g"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "Dymatize"
+    ],
+    [
+     "Servings per container",
+     "52"
+    ],
+    [
+     "Protein source",
+     "Casein"
+    ],
+    [
+     "Complete protein",
+     "Yes"
+    ],
+    [
+     "Protein per serving",
+     "25 g"
+    ],
+    [
+     "Form",
+     "Powder"
+    ],
+    [
+     "Price",
+     "$74.99"
+    ],
+    [
+     "Price per serving",
+     "$1.44"
+    ],
+    [
+     "Cost per g protein",
+     "$0.058"
+    ]
+   ]
+  },
+  {
+   "id": "nutricost-creatine-500g",
+   "cat": "creatine",
+   "name": "Creatine Monohydrate (500 g)",
+   "brand": "Nutricost",
+   "price": 21.95,
+   "servings": 100,
+   "retailer": "Amazon",
+   "url": "https://www.amazon.com/dp/B01MYAGE6S",
+   "stock": true,
+   "stars": 4.7,
+   "reviews": 46000,
+   "valuePer": 0.0439,
+   "valueScore": 50,
+   "score": 72,
+   "attrs": {
+    "form": "Powder",
+    "micronized": true,
+    "dose": 5
+   },
+   "cols": [
+    "Powder",
+    "Micronized",
+    "5 g"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "Nutricost"
+    ],
+    [
+     "Servings per container",
+     "100"
+    ],
+    [
+     "Form",
+     "Powder"
+    ],
+    [
+     "Micronized",
+     "Yes"
+    ],
+    [
+     "Dose per serving",
+     "5 g"
+    ],
+    [
+     "Price",
+     "$21.95"
+    ],
+    [
+     "Price per serving",
+     "$0.22"
+    ],
+    [
+     "Cost per g",
+     "$0.044"
+    ]
+   ]
+  },
+  {
+   "id": "bulksupplements-creatine-1kg",
+   "cat": "creatine",
+   "name": "Creatine Monohydrate (1 kg)",
+   "brand": "BulkSupplements",
+   "price": 24.96,
+   "servings": 200,
+   "retailer": "Amazon",
+   "url": "https://www.amazon.com/dp/B00E9M4XEE",
+   "stock": true,
+   "stars": 4.6,
+   "reviews": 60000,
+   "valuePer": 0.025,
+   "valueScore": 100,
+   "score": 96,
+   "attrs": {
+    "form": "Powder",
+    "micronized": true,
+    "dose": 5
+   },
+   "cols": [
+    "Powder",
+    "Micronized",
+    "5 g"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "BulkSupplements"
+    ],
+    [
+     "Servings per container",
+     "200"
+    ],
+    [
+     "Form",
+     "Powder"
+    ],
+    [
+     "Micronized",
+     "Yes"
+    ],
+    [
+     "Dose per serving",
+     "5 g"
+    ],
+    [
+     "Price",
+     "$24.96"
+    ],
+    [
+     "Price per serving",
+     "$0.12"
+    ],
+    [
+     "Cost per g",
+     "$0.025"
+    ]
+   ]
+  },
+  {
+   "id": "optimum-creatine-caps-300",
+   "cat": "creatine",
+   "name": "Micronized Creatine Capsules (300 ct)",
+   "brand": "Optimum Nutrition",
+   "price": 39.99,
+   "servings": 150,
+   "retailer": "Amazon",
+   "url": "https://www.amazon.com/dp/B002DYIZEO",
+   "stock": true,
+   "stars": 4.7,
+   "reviews": 31000,
+   "valuePer": 0.1066,
+   "valueScore": 0,
+   "score": 47,
+   "attrs": {
+    "form": "Pill",
+    "micronized": true,
+    "dose": 2.5
+   },
+   "cols": [
+    "Pill",
+    "Micronized",
+    "2.5 g"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "Optimum Nutrition"
+    ],
+    [
+     "Servings per container",
+     "150"
+    ],
+    [
+     "Form",
+     "Pill"
+    ],
+    [
+     "Micronized",
+     "Yes"
+    ],
+    [
+     "Dose per serving",
+     "2.5 g"
+    ],
+    [
+     "Price",
+     "$39.99"
+    ],
+    [
+     "Price per serving",
+     "$0.27"
+    ],
+    [
+     "Cost per g",
+     "$0.107"
+    ]
+   ]
+  },
+  {
+   "id": "legion-pulse-21",
+   "cat": "preworkout",
+   "name": "Pulse Pre-Workout (21 servings)",
+   "brand": "Legion",
+   "price": 44.99,
+   "servings": 21,
+   "retailer": "Amazon",
+   "url": "https://www.amazon.com/dp/B00S7ZPB1S",
+   "stock": true,
+   "stars": 4.5,
+   "reviews": 39000,
+   "valuePer": 2.1424,
+   "valueScore": 0,
+   "score": 45,
+   "attrs": {
+    "caffeineMg": 350,
+    "form": "Powder",
+    "stimFree": false,
+    "caffeineBucket": "300+ mg"
+   },
+   "cols": [
+    "350 mg",
+    "Powder",
+    "21"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "Legion"
+    ],
+    [
+     "Servings per container",
+     "21"
+    ],
+    [
+     "Caffeine per serving",
+     "350 mg"
+    ],
+    [
+     "Form",
+     "Powder"
+    ],
+    [
+     "Stim-free",
+     "No"
+    ],
+    [
+     "Price",
+     "$44.99"
+    ],
+    [
+     "Price per serving",
+     "$2.14"
+    ],
+    [
+     "Cost per serving",
+     "$2.14"
+    ]
+   ]
+  },
+  {
+   "id": "c4-original-30",
+   "cat": "preworkout",
+   "name": "C4 Original (30 servings)",
+   "brand": "Cellucor",
+   "price": 24.99,
+   "servings": 30,
+   "retailer": "Amazon",
+   "url": "https://www.amazon.com/dp/B00PYB8Z0K",
+   "stock": true,
+   "stars": 4.5,
+   "reviews": 92000,
+   "valuePer": 0.833,
+   "valueScore": 100,
+   "score": 95,
+   "attrs": {
+    "caffeineMg": 150,
+    "form": "Powder",
+    "stimFree": false,
+    "caffeineBucket": "Under 200 mg"
+   },
+   "cols": [
+    "150 mg",
+    "Powder",
+    "30"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "Cellucor"
+    ],
+    [
+     "Servings per container",
+     "30"
+    ],
+    [
+     "Caffeine per serving",
+     "150 mg"
+    ],
+    [
+     "Form",
+     "Powder"
+    ],
+    [
+     "Stim-free",
+     "No"
+    ],
+    [
+     "Price",
+     "$24.99"
+    ],
+    [
+     "Price per serving",
+     "$0.83"
+    ],
+    [
+     "Cost per serving",
+     "$0.83"
+    ]
+   ]
+  },
+  {
+   "id": "ghost-legend-25",
+   "cat": "preworkout",
+   "name": "Legend Pre-Workout (25 servings)",
+   "brand": "Ghost",
+   "price": 44.99,
+   "servings": 25,
+   "retailer": "Amazon",
+   "url": "https://www.amazon.com/dp/B0B6GDDD1M",
+   "stock": true,
+   "stars": 4.6,
+   "reviews": 12000,
+   "valuePer": 1.7996,
+   "valueScore": 50,
+   "score": 71,
+   "attrs": {
+    "caffeineMg": 250,
+    "form": "Powder",
+    "stimFree": false,
+    "caffeineBucket": "200\u2013300 mg"
+   },
+   "cols": [
+    "250 mg",
+    "Powder",
+    "25"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "Ghost"
+    ],
+    [
+     "Servings per container",
+     "25"
+    ],
+    [
+     "Caffeine per serving",
+     "250 mg"
+    ],
+    [
+     "Form",
+     "Powder"
+    ],
+    [
+     "Stim-free",
+     "No"
+    ],
+    [
+     "Price",
+     "$44.99"
+    ],
+    [
+     "Price per serving",
+     "$1.80"
+    ],
+    [
+     "Cost per serving",
+     "$1.80"
+    ]
+   ]
+  },
+  {
+   "id": "nordic-ultimate-omega-90",
+   "cat": "omega3",
+   "name": "Ultimate Omega (90 softgels)",
+   "brand": "Nordic Naturals",
+   "price": 44.95,
+   "servings": 45,
+   "retailer": "iHerb",
+   "url": "https://www.iherb.com/pr/nordic-naturals-ultimate-omega-lemon-1-280-mg-90-soft-gels-640-mg-per-soft-gel/57444",
+   "stock": true,
+   "stars": 4.8,
+   "reviews": 40000,
+   "valuePer": 0.7804,
+   "valueScore": 0,
+   "score": 48,
+   "attrs": {
+    "form": "Softgel",
+    "epaDhaMg": 1280
+   },
+   "cols": [
+    "Softgel",
+    "1280 mg",
+    "45"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "Nordic Naturals"
+    ],
+    [
+     "Servings per container",
+     "45"
+    ],
+    [
+     "Form",
+     "Softgel"
+    ],
+    [
+     "EPA + DHA per serving",
+     "1280 mg"
+    ],
+    [
+     "Price",
+     "$44.95"
+    ],
+    [
+     "Price per serving",
+     "$1.00"
+    ],
+    [
+     "Cost per g omega",
+     "$0.78"
+    ]
+   ]
+  },
+  {
+   "id": "now-ultra-omega3-180",
+   "cat": "omega3",
+   "name": "Ultra Omega-3 (180 softgels)",
+   "brand": "NOW Foods",
+   "price": 36.99,
+   "servings": 180,
+   "retailer": "iHerb",
+   "url": "https://www.iherb.com/pr/now-foods-ultra-omega-3-180-fish-softgels/24479",
+   "stock": true,
+   "stars": 4.7,
+   "reviews": 21000,
+   "valuePer": 0.274,
+   "valueScore": 100,
+   "score": 97,
+   "attrs": {
+    "form": "Softgel",
+    "epaDhaMg": 750
+   },
+   "cols": [
+    "Softgel",
+    "750 mg",
+    "180"
+   ],
+   "specs": [
+    [
+     "Brand",
+     "NOW Foods"
+    ],
+    [
+     "Servings per container",
+     "180"
+    ],
+    [
+     "Form",
+     "Softgel"
+    ],
+    [
+     "EPA + DHA per serving",
+     "750 mg"
+    ],
+    [
+     "Price",
+     "$36.99"
+    ],
+    [
+     "Price per serving",
+     "$0.21"
+    ],
+    [
+     "Cost per g omega",
+     "$0.27"
+    ]
+   ]
+  }
+ ]
+}

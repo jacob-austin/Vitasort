@@ -1,0 +1,4 @@
+requests>=2.31
+PyYAML>=6.0
+# optional, for Amazon PA-API:
+# python-amazon-paapi>=5.0

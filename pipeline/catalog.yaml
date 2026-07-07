@@ -1,0 +1,192 @@
+# VitaSort curated catalog.
+# Nutrition facts are entered by hand once (scraping labels is unreliable);
+# the pipeline only automates PRICES. seed_price is used until a live price
+# is fetched, then the freshest snapshot in the DB wins.
+#
+# Category config drives the frontend: columns, filters, toggles, value units.
+# active_grams per serving is the denominator for price-per-active-gram.
+
+categories:
+  protein:
+    label: Protein Powder
+    valueUnit: /g protein
+    valueHeader: $/g protein
+    valueDecimals: 3
+    columns: [Source, Complete, Protein]
+    filter: { allLabel: All sources, field: source, options: [Whey, Pea, Casein, Blend] }
+    toggles: [{ label: Complete protein, field: complete }]
+  creatine:
+    label: Creatine
+    valueUnit: /g
+    valueHeader: $/g
+    valueDecimals: 3
+    columns: [Form, Micronized, Dose]
+    filter: { allLabel: All forms, field: form, options: [Powder, Pill, Gummy] }
+  preworkout:
+    label: Pre-Workout
+    valueUnit: /serving
+    valueHeader: $/serving
+    valueDecimals: 2
+    columns: [Caffeine, Form, Servings]
+    filter: { allLabel: All caffeine levels, field: caffeineBucket, options: [Under 200 mg, 200–300 mg, 300+ mg] }
+    toggles: [{ label: Stim-free option, field: stimFree }]
+  omega3:
+    label: Omega-3
+    valueUnit: /g EPA+DHA
+    valueHeader: $/g omega
+    valueDecimals: 2
+    columns: [Form, EPA+DHA, Servings]
+    filter: { allLabel: All forms, field: form, options: [Softgel, Liquid] }
+
+products:
+  # ---------------- protein ----------------
+  - id: on-gold-whey-5lb
+    cat: protein
+    name: Gold Standard 100% Whey (5 lb)
+    brand: Optimum Nutrition
+    attrs: { source: Whey, complete: true, proteinServ: 24, form: Powder }
+    servings: 71
+    active_grams_per_serving: 24
+    seed_price: 79.99
+    stars: 4.7
+    reviews: 98000
+    listings:
+      - { retailer: Amazon, adapter: amazon, asin: B000QSNYGI, url: "https://www.amazon.com/dp/B000QSNYGI" }
+  - id: myprotein-impact-whey-5.5lb
+    cat: protein
+    name: Impact Whey Protein (5.5 lb)
+    brand: Myprotein
+    attrs: { source: Whey, complete: true, proteinServ: 18, form: Powder }
+    servings: 100
+    active_grams_per_serving: 18
+    seed_price: 66.99
+    stars: 4.5
+    reviews: 15400
+    listings:
+      - { retailer: Myprotein, adapter: schema_org, url: "https://us.myprotein.com/sports-nutrition/impact-whey-protein/10530943.html" }
+  - id: now-pea-protein-2lb
+    cat: protein
+    name: Pea Protein Unflavored (2 lb)
+    brand: NOW Sports
+    attrs: { source: Pea, complete: false, proteinServ: 24, form: Powder }
+    servings: 27
+    active_grams_per_serving: 24
+    seed_price: 26.99
+    stars: 4.5
+    reviews: 8900
+    listings:
+      - { retailer: iHerb, adapter: schema_org, url: "https://www.iherb.com/pr/now-foods-sports-pea-protein-pure-unflavored-2-lbs-907-g/47441" }
+  - id: dymatize-casein-4lb
+    cat: protein
+    name: Elite Casein (4 lb)
+    brand: Dymatize
+    attrs: { source: Casein, complete: true, proteinServ: 25, form: Powder }
+    servings: 52
+    active_grams_per_serving: 25
+    seed_price: 74.99
+    stars: 4.6
+    reviews: 12000
+    listings:
+      - { retailer: Amazon, adapter: amazon, asin: B002DYIZH6, url: "https://www.amazon.com/dp/B002DYIZH6" }
+
+  # ---------------- creatine ----------------
+  - id: nutricost-creatine-500g
+    cat: creatine
+    name: Creatine Monohydrate (500 g)
+    brand: Nutricost
+    attrs: { form: Powder, micronized: true, dose: 5 }
+    servings: 100
+    active_grams_per_serving: 5
+    seed_price: 21.95
+    stars: 4.7
+    reviews: 46000
+    listings:
+      - { retailer: Amazon, adapter: amazon, asin: B01MYAGE6S, url: "https://www.amazon.com/dp/B01MYAGE6S" }
+  - id: bulksupplements-creatine-1kg
+    cat: creatine
+    name: Creatine Monohydrate (1 kg)
+    brand: BulkSupplements
+    attrs: { form: Powder, micronized: true, dose: 5 }
+    servings: 200
+    active_grams_per_serving: 5
+    seed_price: 24.96
+    stars: 4.6
+    reviews: 60000
+    listings:
+      - { retailer: Amazon, adapter: amazon, asin: B00E9M4XEE, url: "https://www.amazon.com/dp/B00E9M4XEE" }
+  - id: optimum-creatine-caps-300
+    cat: creatine
+    name: Micronized Creatine Capsules (300 ct)
+    brand: Optimum Nutrition
+    attrs: { form: Pill, micronized: true, dose: 2.5 }
+    servings: 150
+    active_grams_per_serving: 2.5
+    seed_price: 39.99
+    stars: 4.7
+    reviews: 31000
+    listings:
+      - { retailer: Amazon, adapter: amazon, asin: B002DYIZEO, url: "https://www.amazon.com/dp/B002DYIZEO" }
+
+  # ---------------- preworkout ----------------
+  - id: legion-pulse-21
+    cat: preworkout
+    name: Pulse Pre-Workout (21 servings)
+    brand: Legion
+    attrs: { caffeineMg: 350, form: Powder, stimFree: false }
+    servings: 21
+    active_grams_per_serving: 1   # value metric for preworkout is $/serving
+    seed_price: 44.99
+    stars: 4.5
+    reviews: 39000
+    listings:
+      - { retailer: Amazon, adapter: amazon, asin: B00S7ZPB1S, url: "https://www.amazon.com/dp/B00S7ZPB1S" }
+  - id: c4-original-30
+    cat: preworkout
+    name: C4 Original (30 servings)
+    brand: Cellucor
+    attrs: { caffeineMg: 150, form: Powder, stimFree: false }
+    servings: 30
+    active_grams_per_serving: 1
+    seed_price: 24.99
+    stars: 4.5
+    reviews: 92000
+    listings:
+      - { retailer: Amazon, adapter: amazon, asin: B00PYB8Z0K, url: "https://www.amazon.com/dp/B00PYB8Z0K" }
+  - id: ghost-legend-25
+    cat: preworkout
+    name: Legend Pre-Workout (25 servings)
+    brand: Ghost
+    attrs: { caffeineMg: 250, form: Powder, stimFree: false }
+    servings: 25
+    active_grams_per_serving: 1
+    seed_price: 44.99
+    stars: 4.6
+    reviews: 12000
+    listings:
+      - { retailer: Amazon, adapter: amazon, asin: B0B6GDDD1M, url: "https://www.amazon.com/dp/B0B6GDDD1M" }
+
+  # ---------------- omega3 ----------------
+  - id: nordic-ultimate-omega-90
+    cat: omega3
+    name: Ultimate Omega (90 softgels)
+    brand: Nordic Naturals
+    attrs: { form: Softgel, epaDhaMg: 1280 }
+    servings: 45
+    active_grams_per_serving: 1.28
+    seed_price: 44.95
+    stars: 4.8
+    reviews: 40000
+    listings:
+      - { retailer: iHerb, adapter: schema_org, url: "https://www.iherb.com/pr/nordic-naturals-ultimate-omega-lemon-1-280-mg-90-soft-gels-640-mg-per-soft-gel/57444" }
+  - id: now-ultra-omega3-180
+    cat: omega3
+    name: Ultra Omega-3 (180 softgels)
+    brand: NOW Foods
+    attrs: { form: Softgel, epaDhaMg: 750 }
+    servings: 180
+    active_grams_per_serving: 0.75
+    seed_price: 36.99
+    stars: 4.7
+    reviews: 21000
+    listings:
+      - { retailer: iHerb, adapter: schema_org, url: "https://www.iherb.com/pr/now-foods-ultra-omega-3-180-fish-softgels/24479" }
