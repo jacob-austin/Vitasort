@@ -138,3 +138,8 @@ a{color:var(--blue);text-decoration:none}a:hover{color:#1f57ad}
   .pgrid{grid-template-columns:1fr}
   .hero{padding:40px 0 24px}.h1{font-size:27px}
 }
+
+/* product images */
+img.mini{object-fit:contain;background:#fff}
+.pimg.has{background:#fff;align-items:center;padding:20px}
+.pimg.has img{max-width:100%;max-height:100%;object-fit:contain}

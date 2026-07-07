@@ -81,6 +81,8 @@ def fetch_prices(catalog: dict, conn) -> None:
             if result:
                 db.record_price(conn, p["id"], listing["retailer"],
                                 result["price"], result["in_stock"], listing.get("url"))
+                if result.get("image"):
+                    db.record_image(conn, p["id"], result["image"])
                 print(f"  ${result['price']:.2f} ({'in stock' if result['in_stock'] else 'OOS'})")
 
 
@@ -96,6 +98,7 @@ def export(catalog: dict, conn) -> None:
         else:
             p.update(price=p["seed_price"], retailer=first_listing.get("retailer", "—"),
                      stock=True, url=first_listing.get("url"))
+        p["image"] = src.get("image") or db.latest_image(conn, p["id"])
         if p["cat"] == "preworkout":
             p["attrs"]["caffeineBucket"] = caffeine_bucket(p["attrs"]["caffeineMg"])
         p["valuePer"] = scoring.value_per(p["price"], p["active_grams_per_serving"], p["servings"])
@@ -111,6 +114,7 @@ def export(catalog: dict, conn) -> None:
             "id": p["id"], "cat": p["cat"], "name": p["name"], "brand": p["brand"],
             "price": round(p["price"], 2), "servings": p["servings"],
             "retailer": p["retailer"], "url": p.get("url"), "stock": p["stock"],
+            "image": p.get("image"),
             "stars": p["stars"], "reviews": p["reviews"],
             "valuePer": round(p["valuePer"], 4), "valueScore": p["valueScore"], "score": p["score"],
             "attrs": p["attrs"], "cols": display_cols(p), "specs": specs(p, cat_cfg),

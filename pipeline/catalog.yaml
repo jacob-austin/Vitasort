@@ -1,6 +1,7 @@
 # VitaSort curated catalog.
 # Nutrition facts are entered by hand once (scraping labels is unreliable);
-# the pipeline only automates PRICES. seed_price is used until a live price
+# the pipeline automates PRICES and product IMAGES (schema.org / PA-API);
+# an optional per-product `image:` field overrides the fetched URL. seed_price is used until a live price
 # is fetched, then the freshest snapshot in the DB wins.
 #
 # Category config drives the frontend: columns, filters, toggles, value units.

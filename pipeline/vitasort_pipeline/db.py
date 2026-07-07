@@ -14,6 +14,11 @@ CREATE TABLE IF NOT EXISTS price_snapshots (
     fetched_at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_snap_product ON price_snapshots(product_id, fetched_at DESC);
+CREATE TABLE IF NOT EXISTS product_images (
+    product_id TEXT PRIMARY KEY,
+    url TEXT NOT NULL,
+    fetched_at TEXT NOT NULL
+);
 """
 
 
@@ -46,3 +51,19 @@ def latest_price(conn, product_id: str):
     in_stock_rows = [r for r in rows if r[2]] or rows
     best = min(in_stock_rows, key=lambda r: r[1])
     return {"retailer": best[0], "price": best[1], "in_stock": bool(best[2]), "url": best[3]}
+
+
+def record_image(conn, product_id: str, url: str) -> None:
+    conn.execute(
+        "INSERT INTO product_images (product_id, url, fetched_at) VALUES (?, ?, ?) "
+        "ON CONFLICT(product_id) DO UPDATE SET url = excluded.url, fetched_at = excluded.fetched_at",
+        (product_id, url, datetime.now(timezone.utc).isoformat()),
+    )
+    conn.commit()
+
+
+def latest_image(conn, product_id: str) -> str | None:
+    row = conn.execute(
+        "SELECT url FROM product_images WHERE product_id = ?", (product_id,)
+    ).fetchone()
+    return row[0] if row else None

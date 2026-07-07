@@ -26,6 +26,21 @@ def _walk(node):
             yield from _walk(v)
 
 
+def _extract_image(doc):
+    for d in _walk(doc):
+        types = d.get("@type", "")
+        types = types if isinstance(types, list) else [types]
+        if "Product" in types and d.get("image"):
+            img = d["image"]
+            if isinstance(img, list):
+                img = img[0]
+            if isinstance(img, dict):
+                img = img.get("url")
+            if isinstance(img, str) and img.startswith("http"):
+                return img
+    return None
+
+
 def _extract_offer(doc):
     for d in _walk(doc):
         types = d.get("@type", "")
@@ -55,6 +70,7 @@ def fetch_price(listing: dict):
             continue
         offer = _extract_offer(doc)
         if offer:
+            offer["image"] = _extract_image(doc)
             return offer
     print(f"  no schema.org offer found at {listing['url']}")
     return None

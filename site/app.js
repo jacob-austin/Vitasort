@@ -21,7 +21,10 @@
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const cat = () => DATA.categories[state.category] || Object.values(DATA.categories)[0];
   const catKeys = () => Object.keys(DATA.categories);
-  const scoreClass = s => s >= 85 ? 's-hi' : s >= 70 ? 's-mid' : 's-lo';
+  const scoreColor = pct => {                       // 0-100 -> red -> amber -> green
+    const h = pct <= 50 ? 4 + (pct / 50) * 38 : 42 + ((pct - 50) / 50) * 110;
+    return `hsl(${Math.round(h)}, 60%, 36%)`;
+  };
   const fmtPrice = v => '$' + v.toFixed(2).replace(/\.00$/, '');
   const fmtServ = v => '$' + v.toFixed(2);
   const fmtValue = (c, v) => '$' + v.toFixed(c.valueDecimals);
@@ -44,15 +47,21 @@
   function go(view) { state.view = view; render(); window.scrollTo(0, 0); }
 
   // ---------- row templates ----------
+  function miniHTML(p) {
+    return p.image
+      ? `<img class="mini" src="${esc(p.image)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'mini'}))">`
+      : '<span class="mini"></span>';
+  }
   function ringHTML(p, small) {
-    const style = small ? ' style="width:30px;height:30px;font-size:11px;margin:0 auto"' : '';
-    return `<span class="ring ${scoreClass(p.score)}"${style}>${p.score}</span>`;
+    const size = small ? 'width:30px;height:30px;font-size:11px;margin:0 auto;' : '';
+    const c = scoreColor(p.score);
+    return `<span class="ring" style="${size}border-color:${c};color:${c}">${p.score}</span>`;
   }
   function trowHTML(p, showCat, heart) {
     const c = DATA.categories[p.cat];
     const sub = showCat ? `${esc(c.label)} · ${esc(p.brand)}` : esc(p.brand);
     return `<div class="trow" data-open="${p.id}">
-      <span class="mini"></span>
+      ${miniHTML(p)}
       <div><div class="tname">${esc(p.name)}</div><div class="tbrand">${sub}</div></div>
       <div class="tval"><div class="v">${fmtValue(c, p.valuePer)}</div><div class="u">${esc(c.valueUnit)}</div></div>
       ${ringHTML(p)}${heart ? `<span class="heart on" data-save="${p.id}">♥</span>` : ''}
@@ -117,7 +126,7 @@
       </div>
       <div class="rlist">${list.map(p => `
         <div class="rrow" data-open="${p.id}">
-          <div class="pcell"><span class="mini"></span><div style="min-width:0">
+          <div class="pcell">${miniHTML(p)}<div style="min-width:0">
             <div class="pn">${esc(p.name)}</div><div class="pb">${esc(p.brand)}</div></div></div>
           <span class="cval">${esc(p.cols[0])}</span><span class="cmut">${esc(p.cols[1])}</span><span class="cmut">${esc(p.cols[2])}</span>
           <span class="tr pprice">${fmtPrice(p.price)}</span><span class="tr pval">${fmtValue(c, p.valuePer)}</span>
@@ -139,7 +148,9 @@
     <span class="pback" data-nav="results">← Back to results</span>
     <div class="pgrid">
       <div>
-        <div class="pimg"><span>product shot</span></div>
+        ${p.image
+          ? `<div class="pimg has"><img src="${esc(p.image)}" alt="${esc(p.name)}"></div>`
+          : '<div class="pimg"><span>product shot</span></div>'}
         <div class="pbuy">
           <div class="bigprice">${fmtPrice(p.price)}</div>
           <div class="perserv">${fmtServ(p.price / p.servings)} per serving · ${p.servings} servings</div>
@@ -153,14 +164,14 @@
         <h1 class="ptitle">${esc(p.name)}</h1>
         <div class="pbrand2">${esc(p.brand)} · <span class="stars">${p.stars.toFixed(1)}★ <span class="rev">${p.reviews.toLocaleString()} reviews</span></span></div>
         <div class="vcard">
-          <div class="vhead"><span class="ring bigring ${scoreClass(p.score)}">${p.score}</span>
+          <div class="vhead"><span class="ring bigring" style="border-color:${scoreColor(p.score)};color:${scoreColor(p.score)}">${p.score}</span>
             <div><div class="vtitle">VitaScore</div><div class="vnote">Loved supplements, lowest price — one number.</div></div></div>
           <div class="bars">
             <div class="barrow"><span class="barlbl">Community rating</span>
-              <span class="track"><span class="fill b" style="width:${ratingPct}%"></span></span>
+              <span class="track"><span class="fill" style="width:${ratingPct}%;background:${scoreColor(ratingPct)}"></span></span>
               <span class="barval">${p.stars.toFixed(1)}★</span></div>
             <div class="barrow"><span class="barlbl">Price value</span>
-              <span class="track"><span class="fill g" style="width:${p.valueScore}%"></span></span>
+              <span class="track"><span class="fill" style="width:${p.valueScore}%;background:${scoreColor(p.valueScore)}"></span></span>
               <span class="barval">${p.valueScore}/100</span></div>
           </div>
           <div class="vprev">VitaScore blends verified review ratings with cost per active gram, weighted 50/50.</div>

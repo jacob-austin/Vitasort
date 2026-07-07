@@ -51,9 +51,15 @@ def fetch_price(listing: dict):
         items = client.get_items(listing["asin"])
         item = items[0]
         offer = item.offers.listings[0]
+        image = None
+        try:
+            image = item.images.primary.large.url
+        except AttributeError:
+            pass
         return {
             "price": float(offer.price.amount),
             "in_stock": offer.availability.type == "Now",
+            "image": image,
         }
     except Exception as e:  # PA-API raises many exception types; never break the build
         print(f"  PA-API lookup failed for {listing.get('asin')}: {e}")
