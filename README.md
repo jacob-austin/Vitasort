@@ -73,7 +73,11 @@ as buy links, never as price sources. The working paths, in order of effort:
    offer affiliate programs (via Impact/CJ networks) that include sanctioned
    product/price feeds, the same way PA-API works for Amazon. Free to join;
    this is how PCPartPicker-style sites get their data at scale.
-3. **Amazon PA-API** — once your Associates account qualifies.
+3. **Manual verified prices** — `pipeline/manual_prices.yaml`. Real prices you
+   checked yourself, each with a `checked` date the site displays ("as of …")
+   once older than 48 h. Free, honest, and viable at ~30 products; re-check
+   monthly. The daily build ingests these like any other snapshot.
+4. **Amazon PA-API** — once your Associates account qualifies.
 
 ## Scoring
 

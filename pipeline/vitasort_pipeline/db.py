@@ -35,12 +35,13 @@ def connect(path: str | Path) -> sqlite3.Connection:
 
 
 def record_price(conn, product_id: str, retailer: str, price: float,
-                 in_stock: bool = True, url: str | None = None) -> None:
+                 in_stock: bool = True, url: str | None = None,
+                 fetched_at: str | None = None) -> None:
     conn.execute(
         "INSERT INTO price_snapshots (product_id, retailer, price, in_stock, url, fetched_at) "
         "VALUES (?, ?, ?, ?, ?, ?)",
         (product_id, retailer, price, int(in_stock), url,
-         datetime.now(timezone.utc).isoformat()),
+         fetched_at or datetime.now(timezone.utc).isoformat()),
     )
     conn.commit()
 
@@ -82,7 +83,8 @@ def all_latest(conn, product_id: str) -> list[dict]:
            FROM price_snapshots WHERE product_id = ? GROUP BY retailer""",
         (product_id,),
     ).fetchall()
-    return [{"retailer": r[0], "price": r[1], "in_stock": bool(r[2]), "url": r[3]}
+    return [{"retailer": r[0], "price": r[1], "in_stock": bool(r[2]), "url": r[3],
+             "checked": r[4]}
             for r in rows]
 
 

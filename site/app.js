@@ -29,6 +29,12 @@
   const fmtServ = v => '$' + v.toFixed(2);
   const fmtValue = (c, v) => '$' + v.toFixed(c.valueDecimals);
   const byId = id => DATA.products.find(p => p.id === id);
+  const staleNote = (checked) => {
+    if (!checked) return '';
+    const age = Date.now() - new Date(checked).getTime();
+    return age > 48 * 3600e3
+      ? `<span class="o-asof">as of ${new Date(checked).toLocaleDateString()}</span>` : '';
+  };
   const saved = id => state.saved.includes(id);
 
   function toggleSave(id) {
@@ -163,7 +169,7 @@
             ${p.offers.map((o, i) => `<a class="offer${i === 0 && o.price != null ? ' best' : ''}"
               ${o.url ? `href="${esc(o.url)}" target="_blank" rel="noopener nofollow"` : ''}>
               <span class="o-r">${esc(o.retailer)}${i === 0 && o.price != null ? '<span class="o-tag">Best price</span>' : ''}${o.price != null && !o.in_stock ? '<span class="o-tag oos">Out of stock</span>' : ''}</span>
-              <span class="o-p">${o.price != null ? '$' + o.price.toFixed(2) : 'See price →'}</span></a>`).join('')}
+              <span class="o-p">${o.price != null ? '$' + o.price.toFixed(2) : 'See price →'}${o.price != null ? staleNote(o.checked) : ''}</span></a>`).join('')}
           </div>` : ''}
         </div>
       </div>

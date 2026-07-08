@@ -22,6 +22,7 @@ from vitasort_pipeline.retailers import amazon, schema_org
 
 ROOT = Path(__file__).resolve().parent.parent
 CATALOG = Path(__file__).parent / "catalog.yaml"
+MANUAL = Path(__file__).parent / "manual_prices.yaml"
 DB_PATH = Path(__file__).parent / "prices.db"
 OUT = ROOT / "site" / "data" / "products.json"
 
@@ -91,6 +92,18 @@ def fetch_prices(catalog: dict, conn) -> None:
                     db.record_rating(conn, p["id"], result["rating"]["stars"],
                                      result["rating"]["reviews"])
                 print(f"  ${result['price']:.2f} ({'in stock' if result['in_stock'] else 'OOS'})")
+
+
+def ingest_manual(conn) -> None:
+    """Load hand-verified prices; each is a normal snapshot dated when checked."""
+    if not MANUAL.exists():
+        return
+    data = yaml.safe_load(MANUAL.read_text()) or {}
+    for e in data.get("entries") or []:
+        db.record_price(conn, e["product_id"], e["retailer"], float(e["price"]),
+                        e.get("in_stock", True), e.get("url"),
+                        fetched_at=str(e["checked"]) + "T00:00:00+00:00")
+        print(f"manual price: {e['product_id']} @ {e['retailer']} ${e['price']} (checked {e['checked']})")
 
 
 def export(catalog: dict, conn, allow_seed: bool = False) -> None:
@@ -170,6 +183,7 @@ def main():
 
     catalog = yaml.safe_load(CATALOG.read_text())
     conn = db.connect(DB_PATH)
+    ingest_manual(conn)
     if not args.no_fetch:
         fetch_prices(catalog, conn)
     export(catalog, conn, allow_seed=args.allow_seed)
