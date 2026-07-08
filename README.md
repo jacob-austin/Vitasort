@@ -57,6 +57,24 @@ A failed fetch never breaks the build: price falls back to the freshest DB
 snapshot, then the catalog `seed_price`. **Seed prices are placeholders** —
 treat the data as sample until the pipeline has run against live listings.
 
+## Data sources & troubleshooting
+
+Run **Actions → "Check data sources"** (or `python3 pipeline/check.py` locally)
+to see per-listing status: OK / ROBOTS / BLOCKED / NO-DATA / SKIP.
+
+The fetcher **respects robots.txt** — iHerb and Myprotein disallow bot access
+to product pages, so those listings are marked `fetch: false` and appear only
+as buy links, never as price sources. The working paths, in order of effort:
+
+1. **Brand-direct stores** (current live source) — most supplement brands'
+   own sites permit product-page access and publish JSON-LD prices. Add a
+   listing with `adapter: schema_org` pointing at the brand's product page.
+2. **Affiliate data feeds** (the durable path) — iHerb, Vitacost, and others
+   offer affiliate programs (via Impact/CJ networks) that include sanctioned
+   product/price feeds, the same way PA-API works for Amazon. Free to join;
+   this is how PCPartPicker-style sites get their data at scale.
+3. **Amazon PA-API** — once your Associates account qualifies.
+
 ## Scoring
 
 - `valuePer` = price ÷ (active grams per serving × servings)

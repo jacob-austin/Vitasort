@@ -35,7 +35,7 @@ def _allowed_by_robots(url: str) -> bool:
 def polite_get(url: str) -> requests.Response | None:
     """GET with per-host rate limiting and robots.txt respect."""
     if not _allowed_by_robots(url):
-        print(f"  robots.txt disallows {url}; skipping")
+        print(f"  robots.txt disallows fetching this page -> {url}")
         return None
     host = urlparse(url).netloc
     wait = MIN_SECONDS_BETWEEN_REQUESTS - (time.time() - _last_request_at.get(host, 0))

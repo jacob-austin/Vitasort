@@ -102,6 +102,7 @@ products:
   - retailer: iHerb
     adapter: schema_org
     url: https://www.iherb.com/pr/optimum-nutrition-gold-standard-100-whey-protein-double-rich-chocolate-5-05-lb-2-29-kg/27509
+    fetch: false
 - id: myprotein-impact-whey-5.5lb
   cat: protein
   name: Impact Whey Protein (5.5 lb)
@@ -120,6 +121,7 @@ products:
   - retailer: Myprotein
     adapter: schema_org
     url: https://us.myprotein.com/sports-nutrition/impact-whey-protein/10530943.html
+    fetch: false
 - id: now-pea-protein-2lb
   cat: protein
   name: Pea Protein Unflavored (2 lb)
@@ -138,6 +140,7 @@ products:
   - retailer: iHerb
     adapter: schema_org
     url: https://www.iherb.com/pr/now-foods-sports-pea-protein-pure-unflavored-2-lbs-907-g/9858
+    fetch: false
   image: https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/now/now02135/l/41.jpg
 - id: dymatize-casein-4lb
   cat: protein
@@ -179,6 +182,7 @@ products:
   - retailer: iHerb
     adapter: schema_org
     url: https://www.iherb.com/pr/nutricost-performance-creatine-monohydrate-unflavored-1-1-lb-500-g/131935
+    fetch: false
 - id: bulksupplements-creatine-1kg
   cat: creatine
   name: Creatine Monohydrate (1 kg)
@@ -233,6 +237,9 @@ products:
     adapter: amazon
     asin: B00S7ZPB1S
     url: https://www.amazon.com/dp/B00S7ZPB1S
+  - retailer: Legion
+    adapter: schema_org
+    url: https://legionathletics.com/products/supplements/pulse-pre-workout/
 - id: c4-original-30
   cat: preworkout
   name: C4 Original (30 servings)
@@ -285,6 +292,7 @@ products:
   - retailer: iHerb
     adapter: schema_org
     url: https://www.iherb.com/pr/nordic-naturals-ultimate-omega-great-lemon-120-soft-gels-640-mg-per-soft-gel/4200
+    fetch: false
 - id: now-ultra-omega3-180
   cat: omega3
   name: Omega-3, Molecularly Distilled (90 softgels)
@@ -301,6 +309,7 @@ products:
   - retailer: iHerb
     adapter: schema_org
     url: https://www.iherb.com/pr/now-foods-omega-3-fish-oil-90-softgels/117152
+    fetch: false
 - id: c4-original-60
   cat: preworkout
   name: C4 Original (60 servings)
@@ -318,6 +327,7 @@ products:
   - retailer: iHerb
     adapter: schema_org
     url: https://www.iherb.com/pr/c4-cellucor-c4-original-pre-workout-fruit-punch-12-7-oz-360-g/64195
+    fetch: false
 - id: c4-sport-30
   cat: preworkout
   name: C4 Sport (30 servings)
@@ -335,6 +345,7 @@ products:
   - retailer: iHerb
     adapter: schema_org
     url: https://www.iherb.com/pr/c4-cellucor-c4-sport-pre-workout-fruit-punch-7-4-oz-210-g/81118
+    fetch: false
 - id: legion-pulse-stimfree-21
   cat: preworkout
   name: Pulse Stim-Free (21 servings)
@@ -352,6 +363,10 @@ products:
   - retailer: iHerb
     adapter: schema_org
     url: https://www.iherb.com/pr/legion-athletics-pulse-stim-free-pre-workout-drink-fruit-punch-0-97-lbs-438-g/142084
+    fetch: false
+  - retailer: Legion
+    adapter: schema_org
+    url: https://legionathletics.com/products/supplements/pulse-stim-free/
 - id: nordic-ultimate-omega-60
   cat: omega3
   name: Ultimate Omega (60 softgels)
@@ -368,6 +383,7 @@ products:
   - retailer: iHerb
     adapter: schema_org
     url: https://www.iherb.com/pr/nordic-naturals-ultimate-omega-lemon-60-soft-gels-640-mg-per-soft-gel/43654
+    fetch: false
 - id: nordic-ultimate-omega-180
   cat: omega3
   name: Ultimate Omega (180 softgels)
@@ -384,6 +400,7 @@ products:
   - retailer: iHerb
     adapter: schema_org
     url: https://www.iherb.com/pr/nordic-naturals-ultimate-omega-great-lemon-180-soft-gels-640-mg-per-soft-gel/12949
+    fetch: false
 - id: dymatize-iso100-5lb
   cat: protein
   name: ISO100 Hydrolyzed Isolate (5 lb)

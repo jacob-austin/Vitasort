@@ -73,6 +73,8 @@ def specs(p: dict, cat_cfg: dict) -> list[list[str]]:
 def fetch_prices(catalog: dict, conn) -> None:
     for p in catalog["products"]:
         for listing in p.get("listings", []):
+            if listing.get("fetch") is False:
+                continue   # robots-disallowed or link-only retailer
             adapter = ADAPTERS.get(listing.get("adapter"))
             if adapter is None:
                 print(f"  unknown adapter {listing.get('adapter')!r} on {p['id']}")
