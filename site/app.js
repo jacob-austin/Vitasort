@@ -82,7 +82,7 @@
     </div>
     <div class="htop">
       <div class="htop-h"><span class="eyebrow">Best value right now</span><span class="eyebrow">Score · $/unit</span></div>
-      <div class="tlist">${top.map(p => trowHTML(p)).join('')}</div>
+      <div class="tlist">${top.map(p => trowHTML(p)).join('') || '<div class="empty">No live prices yet — the daily refresh hasn\u2019t completed its first successful run.</div>'}</div>
     </div>`;
   }
 

@@ -41,6 +41,21 @@ def _extract_image(doc):
     return None
 
 
+def _extract_rating(doc):
+    for d in _walk(doc):
+        types = d.get("@type", "")
+        types = types if isinstance(types, list) else [types]
+        if "AggregateRating" in types:
+            try:
+                stars = float(d.get("ratingValue"))
+                reviews = int(d.get("reviewCount") or d.get("ratingCount") or 0)
+            except (TypeError, ValueError):
+                continue
+            if 0 < stars <= 5 and reviews > 0:
+                return {"stars": stars, "reviews": reviews}
+    return None
+
+
 def _extract_offer(doc):
     for d in _walk(doc):
         types = d.get("@type", "")
@@ -71,6 +86,7 @@ def fetch_price(listing: dict):
         offer = _extract_offer(doc)
         if offer:
             offer["image"] = _extract_image(doc)
+            offer["rating"] = _extract_rating(doc)
             return offer
     # Fallbacks for pages without Product JSON-LD (structured meta the site
     # publishes intentionally: itemprop/og price tags, og:image, retailer CDN imgs)
@@ -112,6 +128,7 @@ def fetch_price(listing: dict):
         offer = _extract_offer(doc)
         if offer:
             offer["image"] = _extract_image(doc)
+            offer["rating"] = _extract_rating(doc)
             return offer
     # Fallbacks for pages without Product JSON-LD (structured meta the site
     # publishes intentionally: itemprop/og price tags, og:image, retailer CDN imgs)

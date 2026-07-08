@@ -85,11 +85,15 @@ def fetch_prices(catalog: dict, conn) -> None:
                                 result.get("url") or listing.get("url"))
                 if result.get("image"):
                     db.record_image(conn, p["id"], result["image"])
+                if result.get("rating"):
+                    db.record_rating(conn, p["id"], result["rating"]["stars"],
+                                     result["rating"]["reviews"])
                 print(f"  ${result['price']:.2f} ({'in stock' if result['in_stock'] else 'OOS'})")
 
 
-def export(catalog: dict, conn) -> None:
+def export(catalog: dict, conn, allow_seed: bool = False) -> None:
     products = []
+    hidden = []
     for src in catalog["products"]:
         p = dict(src)
         listings = p.get("listings") or []
@@ -107,12 +111,17 @@ def export(catalog: dict, conn) -> None:
             best = priced[0]
             p.update(price=best["price"], retailer=best["retailer"],
                      stock=best["in_stock"], url=best["url"] or first_listing.get("url"))
-        else:
+        elif allow_seed and p.get("seed_price"):
+            # local preview only — never in production builds
             p.update(price=p["seed_price"], retailer=first_listing.get("retailer", "—"),
                      stock=True, url=first_listing.get("url"))
-            if offers:
-                offers[0] = {**offers[0], "price": p["seed_price"]}
-        p["offers"] = priced + [o for o in offers if o["price"] is None] if priced else offers
+        else:
+            hidden.append(p["id"])   # no verified price -> not displayed
+            continue
+        p["offers"] = priced + [o for o in offers if o["price"] is None]
+        live_rating = db.latest_rating(conn, p["id"])
+        if live_rating:
+            p["stars"], p["reviews"] = live_rating["stars"], live_rating["reviews"]
         p["image"] = src.get("image") or db.latest_image(conn, p["id"])
         tag = os.environ.get("AMAZON_PARTNER_TAG")
         if tag and p["retailer"] == "Amazon" and p.get("url") and "tag=" not in p["url"]:
@@ -146,18 +155,22 @@ def export(catalog: dict, conn) -> None:
     }, indent=1))
     with_img = sum(1 for p in out_products if p["image"])
     print(f"wrote {OUT} ({len(out_products)} products, {with_img} with images)")
+    if hidden:
+        print(f"hidden (no live price yet): {len(hidden)} -> {', '.join(hidden)}")
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-fetch", action="store_true", help="skip live price fetching")
+    ap.add_argument("--allow-seed", action="store_true",
+                    help="LOCAL DEV ONLY: show catalog seed prices for products without live data")
     args = ap.parse_args()
 
     catalog = yaml.safe_load(CATALOG.read_text())
     conn = db.connect(DB_PATH)
     if not args.no_fetch:
         fetch_prices(catalog, conn)
-    export(catalog, conn)
+    export(catalog, conn, allow_seed=args.allow_seed)
 
 
 if __name__ == "__main__":

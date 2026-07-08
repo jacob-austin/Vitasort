@@ -14,6 +14,12 @@ CREATE TABLE IF NOT EXISTS price_snapshots (
     fetched_at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_snap_product ON price_snapshots(product_id, fetched_at DESC);
+CREATE TABLE IF NOT EXISTS product_ratings (
+    product_id TEXT PRIMARY KEY,
+    stars REAL NOT NULL,
+    reviews INTEGER NOT NULL,
+    fetched_at TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS product_images (
     product_id TEXT PRIMARY KEY,
     url TEXT NOT NULL,
@@ -78,3 +84,20 @@ def all_latest(conn, product_id: str) -> list[dict]:
     ).fetchall()
     return [{"retailer": r[0], "price": r[1], "in_stock": bool(r[2]), "url": r[3]}
             for r in rows]
+
+
+def record_rating(conn, product_id: str, stars: float, reviews: int) -> None:
+    conn.execute(
+        "INSERT INTO product_ratings (product_id, stars, reviews, fetched_at) VALUES (?, ?, ?, ?) "
+        "ON CONFLICT(product_id) DO UPDATE SET stars = excluded.stars, "
+        "reviews = excluded.reviews, fetched_at = excluded.fetched_at",
+        (product_id, stars, reviews, datetime.now(timezone.utc).isoformat()),
+    )
+    conn.commit()
+
+
+def latest_rating(conn, product_id: str):
+    row = conn.execute(
+        "SELECT stars, reviews FROM product_ratings WHERE product_id = ?", (product_id,)
+    ).fetchone()
+    return {"stars": row[0], "reviews": row[1]} if row else None
