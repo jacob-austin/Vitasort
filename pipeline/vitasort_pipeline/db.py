@@ -67,3 +67,14 @@ def latest_image(conn, product_id: str) -> str | None:
         "SELECT url FROM product_images WHERE product_id = ?", (product_id,)
     ).fetchone()
     return row[0] if row else None
+
+
+def all_latest(conn, product_id: str) -> list[dict]:
+    """Most recent snapshot for every retailer that has one."""
+    rows = conn.execute(
+        """SELECT retailer, price, in_stock, url, MAX(fetched_at)
+           FROM price_snapshots WHERE product_id = ? GROUP BY retailer""",
+        (product_id,),
+    ).fetchall()
+    return [{"retailer": r[0], "price": r[1], "in_stock": bool(r[2]), "url": r[3]}
+            for r in rows]

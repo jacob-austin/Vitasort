@@ -72,5 +72,68 @@ def fetch_price(listing: dict):
         if offer:
             offer["image"] = _extract_image(doc)
             return offer
-    print(f"  no schema.org offer found at {listing['url']}")
+    # Fallbacks for pages without Product JSON-LD (structured meta the site
+    # publishes intentionally: itemprop/og price tags, og:image, retailer CDN imgs)
+    html = resp.text
+    m = (re.search(r'itemprop=["\']price["\'][^>]*content=["\']([\d.,]+)', html)
+         or re.search(r'property=["\']og:price:amount["\'][^>]*content=["\']([\d.,]+)', html)
+         or re.search(r'property=["\']product:price:amount["\'][^>]*content=["\']([\d.,]+)', html))
+    if m:
+        try:
+            price = float(m.group(1).replace(",", ""))
+        except ValueError:
+            price = None
+        if price:
+            return {"price": price, "in_stock": "outofstock" not in html.lower().replace(" ", ""),
+                    "image": _fallback_image(html)}
+    print(f"  no structured price found at {listing['url']}")
     return None
+
+
+def _fallback_image(html: str):
+    m = re.search(
+        r'https://cloudinary\.images-iherb\.com/image/upload/[^"\'\s>]+/images/[a-z0-9]+/[a-z0-9]+/l/\d+\.jpg',
+        html)
+    if m:
+        return m.group(0)
+    m = re.search(r'property=["\']og:image["\'][^>]*content=["\'](https?://[^"\']+)', html)
+    return m.group(1) if m else None
+
+
+def fetch_price(listing: dict):
+    resp = polite_get(listing["url"])
+    if resp is None:
+        return None
+    for match in _LDJSON_RE.findall(resp.text):
+        try:
+            doc = json.loads(match.strip())
+        except json.JSONDecodeError:
+            continue
+        offer = _extract_offer(doc)
+        if offer:
+            offer["image"] = _extract_image(doc)
+            return offer
+    # Fallbacks for pages without Product JSON-LD (structured meta the site
+    # publishes intentionally: itemprop/og price tags, og:image, retailer CDN imgs)
+    html = resp.text
+    m = (re.search(r'itemprop=["\']price["\'][^>]*content=["\']([\d.,]+)', html)
+         or re.search(r'property=["\']og:price:amount["\'][^>]*content=["\']([\d.,]+)', html)
+         or re.search(r'property=["\']product:price:amount["\'][^>]*content=["\']([\d.,]+)', html))
+    if m:
+        try:
+            price = float(m.group(1).replace(",", ""))
+        except ValueError:
+            price = None
+        if price:
+            return {"price": price, "in_stock": "outofstock" not in html.lower().replace(" ", ""),
+                    "image": _fallback_image(html)}
+    print(f"  no structured price found at {listing['url']}")
+    return None
+
+
+def _fallback_image(html: str):
+    m = re.search(r'images-iherb\.com/image/upload/[^"\'\s>]+/images/[a-z0-9]+/[a-z0-9]+/l/\d+\.jpg', html)
+    if m:
+        return "https://cloudinary." + m.group(0).split("cloudinary.")[-1] if "cloudinary" not in m.group(0) else "https://" + m.group(0)
+    m = re.search(r'property=["\']og:image["\'][^>]*content=["\'](https?://[^"\']+)', html)
+    return m.group(1) if m else None

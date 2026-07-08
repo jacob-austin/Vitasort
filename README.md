@@ -66,6 +66,15 @@ treat the data as sample until the pipeline has run against live listings.
   Bayesian prior (200 reviews at category mean) stops a 5.0★ × 3-review
   product outranking a 4.7★ × 8,000-review one. Weights in `scoring.py`.
 
+## Multi-retailer offers
+
+Each product can carry several `listings`; the pipeline stores every retailer's
+latest price and the site shows them all on the product page with the cheapest
+highlighted ("Best price"). Listings without a fetched price render as
+"See price →" links. Some catalog products have **no listings yet** (facts
+entered from their labels, seed prices only) — add a URL or ASIN to activate
+live pricing for them.
+
 ## Adding a category or product
 
 Categories are pure config — `catalog.yaml → categories` defines the label,

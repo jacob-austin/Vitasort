@@ -9,6 +9,7 @@ Price resolution per product: freshest DB snapshot (lowest across retailers)
 """
 import argparse
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -80,7 +81,8 @@ def fetch_prices(catalog: dict, conn) -> None:
             result = adapter.fetch_price(listing)
             if result:
                 db.record_price(conn, p["id"], listing["retailer"],
-                                result["price"], result["in_stock"], listing.get("url"))
+                                result["price"], result["in_stock"],
+                                result.get("url") or listing.get("url"))
                 if result.get("image"):
                     db.record_image(conn, p["id"], result["image"])
                 print(f"  ${result['price']:.2f} ({'in stock' if result['in_stock'] else 'OOS'})")
@@ -90,15 +92,31 @@ def export(catalog: dict, conn) -> None:
     products = []
     for src in catalog["products"]:
         p = dict(src)
-        live = db.latest_price(conn, p["id"])
-        first_listing = (p.get("listings") or [{}])[0]
-        if live:
-            p.update(price=live["price"], retailer=live["retailer"],
-                     stock=live["in_stock"], url=live["url"] or first_listing.get("url"))
+        listings = p.get("listings") or []
+        first_listing = (listings or [{}])[0]
+        live_offers = db.all_latest(conn, p["id"])
+        seen = {o["retailer"] for o in live_offers}
+        # listings without a live snapshot still appear as link-only offers
+        offers = live_offers + [
+            {"retailer": l["retailer"], "price": None, "in_stock": True, "url": l.get("url")}
+            for l in listings if l["retailer"] not in seen
+        ]
+        priced = sorted([o for o in offers if o["price"] is not None],
+                        key=lambda o: (not o["in_stock"], o["price"]))
+        if priced:
+            best = priced[0]
+            p.update(price=best["price"], retailer=best["retailer"],
+                     stock=best["in_stock"], url=best["url"] or first_listing.get("url"))
         else:
             p.update(price=p["seed_price"], retailer=first_listing.get("retailer", "—"),
                      stock=True, url=first_listing.get("url"))
+            if offers:
+                offers[0] = {**offers[0], "price": p["seed_price"]}
+        p["offers"] = priced + [o for o in offers if o["price"] is None] if priced else offers
         p["image"] = src.get("image") or db.latest_image(conn, p["id"])
+        tag = os.environ.get("AMAZON_PARTNER_TAG")
+        if tag and p["retailer"] == "Amazon" and p.get("url") and "tag=" not in p["url"]:
+            p["url"] += ("&" if "?" in p["url"] else "?") + "tag=" + tag
         if p["cat"] == "preworkout":
             p["attrs"]["caffeineBucket"] = caffeine_bucket(p["attrs"]["caffeineMg"])
         p["valuePer"] = scoring.value_per(p["price"], p["active_grams_per_serving"], p["servings"])
@@ -114,7 +132,7 @@ def export(catalog: dict, conn) -> None:
             "id": p["id"], "cat": p["cat"], "name": p["name"], "brand": p["brand"],
             "price": round(p["price"], 2), "servings": p["servings"],
             "retailer": p["retailer"], "url": p.get("url"), "stock": p["stock"],
-            "image": p.get("image"),
+            "image": p.get("image"), "offers": p["offers"],
             "stars": p["stars"], "reviews": p["reviews"],
             "valuePer": round(p["valuePer"], 4), "valueScore": p["valueScore"], "score": p["score"],
             "attrs": p["attrs"], "cols": display_cols(p), "specs": specs(p, cat_cfg),
@@ -126,7 +144,8 @@ def export(catalog: dict, conn) -> None:
         "categories": catalog["categories"],
         "products": out_products,
     }, indent=1))
-    print(f"wrote {OUT} ({len(out_products)} products)")
+    with_img = sum(1 for p in out_products if p["image"])
+    print(f"wrote {OUT} ({len(out_products)} products, {with_img} with images)")
 
 
 def main():

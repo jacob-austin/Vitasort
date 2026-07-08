@@ -6,7 +6,7 @@
 
   const state = {
     view: 'home', category: null, search: '', sortKey: 'value', sortDir: 'asc',
-    filterVal: '', toggles: {}, stock: false, productId: null, saved: [],
+    filterVal: '', toggles: {}, stock: false, productId: null, saved: [], limit: 60,
   };
   let DATA = null; // { generated, categories: {key:cfg}, products: [...] }
 
@@ -41,7 +41,7 @@
     render();
   }
   function openCategory(k) {
-    Object.assign(state, { view: 'results', category: k, filterVal: '', toggles: {}, search: '' });
+    Object.assign(state, { view: 'results', category: k, filterVal: '', toggles: {}, search: '', limit: 60 });
     render(); window.scrollTo(0, 0);
   }
   function go(view) { state.view = view; render(); window.scrollTo(0, 0); }
@@ -124,7 +124,7 @@
         <span class="tr"><span class="${sc('value')}" data-sort="value">${esc(c.valueHeader)}${arrow('value')}</span></span>
         <span class="tc"><span class="${sc('score')}" data-sort="score">Score${arrow('score')}</span></span><span></span>
       </div>
-      <div class="rlist">${list.map(p => `
+      <div class="rlist">${list.slice(0, state.limit).map(p => `
         <div class="rrow" data-open="${p.id}">
           <div class="pcell">${miniHTML(p)}<div style="min-width:0">
             <div class="pn">${esc(p.name)}</div><div class="pb">${esc(p.brand)}</div></div></div>
@@ -132,7 +132,8 @@
           <span class="tr pprice">${fmtPrice(p.price)}</span><span class="tr pval">${fmtValue(c, p.valuePer)}</span>
           <span class="tc">${ringHTML(p, true)}</span>
           <span class="heart${saved(p.id) ? ' on' : ''}" data-save="${p.id}">♥</span>
-        </div>`).join('') || '<div class="empty">No products match those filters.</div>'}</div>
+        </div>`).join('') || '<div class="empty">No products match those filters.</div>'}
+      ${list.length > state.limit ? '<div id="moreSentinel" class="loading" style="padding:18px">Loading more…</div>' : ''}</div>
     </div>`;
   }
 
@@ -157,6 +158,13 @@
           ${p.url ? `<a class="btn buylink" href="${esc(p.url)}" target="_blank" rel="noopener nofollow">Buy at ${esc(p.retailer)} →</a>`
                   : `<button class="btn" disabled>Available at ${esc(p.retailer)}</button>`}
           <button class="btn sec${isSaved ? ' on' : ''}" data-save="${p.id}">${isSaved ? '♥ Saved' : '♡ Save'}</button>
+          ${(p.offers && p.offers.length > 1) ? `<div class="offers">
+            <div class="offers-h">All retailers</div>
+            ${p.offers.map((o, i) => `<a class="offer${i === 0 && o.price != null ? ' best' : ''}"
+              ${o.url ? `href="${esc(o.url)}" target="_blank" rel="noopener nofollow"` : ''}>
+              <span class="o-r">${esc(o.retailer)}${i === 0 && o.price != null ? '<span class="o-tag">Best price</span>' : ''}${o.price != null && !o.in_stock ? '<span class="o-tag oos">Out of stock</span>' : ''}</span>
+              <span class="o-p">${o.price != null ? '$' + o.price.toFixed(2) : 'See price →'}</span></a>`).join('')}
+          </div>` : ''}
         </div>
       </div>
       <div>
@@ -196,6 +204,12 @@
     const el = document.getElementById('view');
     el.innerHTML = { home: homeHTML, results: resultsHTML, product: productHTML, saved: savedHTML }[state.view]();
     document.getElementById('savedBadge').textContent = state.saved.length;
+    const sentinel = document.getElementById('moreSentinel');
+    if (sentinel && 'IntersectionObserver' in window) {
+      new IntersectionObserver((entries, obs) => {
+        if (entries[0].isIntersecting) { obs.disconnect(); state.limit += 60; render(); }
+      }, { rootMargin: '600px' }).observe(sentinel);
+    }
   }
 
   document.addEventListener('click', (e) => {
@@ -205,7 +219,7 @@
     if (t.dataset.open) { state.productId = t.dataset.open; go('product'); return; }
     if (t.dataset.nav) { go(t.dataset.nav); return; }
     if (t.dataset.cat) { openCategory(t.dataset.cat); return; }
-    if (t.dataset.tab) { Object.assign(state, { category: t.dataset.tab, filterVal: '', toggles: {} }); render(); return; }
+    if (t.dataset.tab) { Object.assign(state, { category: t.dataset.tab, filterVal: '', toggles: {}, limit: 60 }); render(); return; }
     if (t.dataset.tog) {
       if (t.dataset.tog === '__stock') state.stock = !state.stock;
       else state.toggles[t.dataset.tog] = !state.toggles[t.dataset.tog];
